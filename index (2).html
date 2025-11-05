@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мир тестирования ПО</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            animation: backgroundPulse 15s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #0083b0;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1),
+                            0 0 20px rgba(0, 180, 219, 0.3);
+            }
+            50% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1),
+                            0 0 30px rgba(0, 180, 219, 0.6),
+                            0 0 40px rgba(0, 180, 219, 0.4);
+            }
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+
+        section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease-out backwards;
+            animation-delay: calc(var(--section-index) * 0.1s);
+        }
+
+        section:nth-child(2) { --section-index: 1; }
+        section:nth-child(3) { --section-index: 2; }
+        section:nth-child(4) { --section-index: 3; }
+        section:nth-child(5) { --section-index: 4; }
+        section:nth-child(6) { --section-index: 5; }
+        section:nth-child(7) { --section-index: 6; }
+        section:nth-child(8) { --section-index: 7; }
+        section:nth-child(9) { --section-index: 8; }
+        section:nth-child(10) { --section-index: 9; }
+        section:nth-child(11) { --section-index: 10; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #0083b0;
+            font-size: 2em;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #00b4db;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #00b4db;
+            font-size: 1.4em;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            color: #555;
+        }
+
+        .profile-image {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            animation: imageFloat 6s ease-in-out infinite;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 40px rgba(0, 131, 176, 0.4);
+        }
+
+        @keyframes imageFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .skills-list li {
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skills-list li::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .skills-list li:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .skills-list li:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 10px 30px rgba(0, 131, 176, 0.5);
+        }
+
+        .bug-icon {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+            display: inline-block;
+            animation: bugBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bugBounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-5px) rotate(-5deg);
+            }
+            75% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #0083b0;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #00b4db;
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            margin-top: 30px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #00b4db 0%, #0083b0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #0083b0;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .type-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 180, 219, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .type-card:hover::before {
+            left: 100%;
+        }
+
+        .type-card:hover {
+            transform: translateX(10px) translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 131, 176, 0.4);
+            border-left-width: 8px;
+        }
+
+        .type-card h4 {
+            color: #0083b0;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐛 Мир тестирования ПО</h1>
+            <p class="subtitle">Путь от багов к качественному продукту</p>
+        </header>
+
+        <section>
+            <h2>Обо мне и моём пути</h2>
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800" alt="Тестирование" class="profile-image">
+            <p>
+                Привет! Меня зовут <span class="highlight">Сергей</span>, и я начинающий QA-инженер. 
+                Моё знакомство с тестированием началось случайно - я заметила баг в любимом приложении 
+                и решила сообщить о нём разработчикам. Тогда я поняла, что нашла своё призвание!
+            </p>
+            <p>
+                Сейчас я активно изучаю тестирование ПО и понимаю, насколько это важная и ответственная работа. 
+                Каждый найденный баг - это потенциальная проблема, которую не увидит пользователь. 
+                Тестировщик - это первая линия защиты качества продукта!
+            </p>
+        </section>
+
+        <section>
+            <h2>Почему тестирование?</h2>
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800" alt="Качество" class="profile-image">
+            
+            <h3>Что меня привлекает в этой профессии:</h3>
+            <ul>
+                <li><strong>Внимание к деталям</strong> - замечать то, что упускают другие</li>
+                <li><strong>Логическое мышление</strong> - продумывать различные сценарии использования</li>
+                <li><strong>Улучшение продукта</strong> - делать приложения удобнее для пользователей</li>
+                <li><strong>Разнообразие задач</strong> - каждый проект уникален</li>
+                <li><strong>Востребованность</strong> - качество всегда в приоритете</li>
+            </ul>
+
+            <p>
+                Тестирование - это не просто "поиск багов". Это целая наука о том, как убедиться, 
+                что продукт работает правильно, безопасно и удобно для пользователей.
+            </p>
+        </section>
+
+        <section>
+            <h2>Виды тестирования, которые я изучаю</h2>
+            
+            <div class="types-grid">
+                <div class="type-card">
+                    <h4>🔍 Функциональное</h4>
+                    <p>Проверка, что все функции работают согласно требованиям</p>
+                </div>
+                <div class="type-card">
+                    <h4>⚡ Нагрузочное</h4>
+                    <p>Тестирование производительности при большом количестве пользователей</p>
+                </div>
+                <div class="type-card">
+                    <h4>🔒 Безопасности</h4>
+                    <p>Поиск уязвимостей и проверка защиты данных</p>
+                </div>
+                <div class="type-card">
+                    <h4>📱 Совместимости</h4>
+                    <p>Работа на разных устройствах и браузерах</p>
+                </div>
+                <div class="type-card">
+                    <h4>🎨 Юзабилити</h4>
+                    <p>Удобство использования интерфейса</p>
+                </div>
+                <div class="type-card">
+                    <h4>🔄 Регрессионное</h4>
+                    <p>Проверка, что исправления не сломали работающий функционал</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Мои навыки и инструменты</h2>
+            <p>За время обучения я освоила следующие технологии и инструменты:</p>
+            
+            <ul class="skills-list">
+                <li>Jira & TestRail</li>
+                <li>Postman</li>
+                <li>SQL</li>
+                <li>Git & GitHub</li>
+                <li>HTML & CSS</li>
+                <li>Теория тестирования</li>
+                <li>API тестирование</li>
+                <li>Selenium основы</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Мои достижения</h2>
+            <p>Вот чем я горжусь на своём пути изучения тестирования:</p>
+            
+            <ol>
+                <li><strong>100+ найденных багов</strong> - в учебных и реальных проектах</li>
+                <li><strong>Первая документация</strong> - написала тест-кейсы для мобильного приложения</li>
+                <li><strong>Изучение SQL</strong> - могу проверять данные в базе данных</li>
+                <li><strong>API тестирование</strong> - освоила Postman для проверки запросов</li>
+                <li><strong>Участие в буг-баше</strong> - работала в команде тестировщиков</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Типичный процесс тестирования</h2>
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800" alt="Процесс" class="profile-image">
+            
+            <h3>Как я подхожу к тестированию проекта:</h3>
+            <ol>
+                <li><strong>Анализ требований</strong> - изучаю, что должно работать</li>
+                <li><strong>Составление тест-плана</strong> - планирую процесс тестирования</li>
+                <li><strong>Написание тест-кейсов</strong> - детальные сценарии проверок</li>
+                <li><strong>Выполнение тестов</strong> - проверяю функциональность</li>
+                <li><strong>Заведение багов</strong> - документирую найденные проблемы</li>
+                <li><strong>Ретест</strong> - проверяю исправления</li>
+                <li><strong>Отчёт</strong> - предоставляю результаты тестирования</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Примеры найденных багов</h2>
+            <p>Некоторые интересные баги, которые я нашла в процессе обучения:</p>
+            
+            <ul>
+                <li><span class="bug-icon">BUG #1</span> <strong>Критический:</strong> Пользователь мог оформить заказ с пустой корзиной</li>
+                <li><span class="bug-icon">BUG #2</span> <strong>Высокий:</strong> Форма регистрации принимала некорректный email</li>
+                <li><span class="bug-icon">BUG #3</span> <strong>Средний:</strong> Кнопка "Назад" на мобильном устройстве не работала</li>
+                <li><span class="bug-icon">BUG #4</span> <strong>Низкий:</strong> Неправильный цвет текста на тёмной теме</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Планы на будущее</h2>
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800" alt="Будущее" class="profile-image">
+            <p>
+                Моя цель - стать профессиональным QA-инженером и работать над продуктами, 
+                которыми пользуются миллионы людей. Я планирую углубить свои знания в автоматизации 
+                тестирования, освоить Python и JavaScript для написания автотестов.
+            </p>
+            <p>
+                Также хочу получить сертификацию ISTQB и продолжать развиваться в направлении 
+                тестирования безопасности и производительности. Качество - это то, что делает 
+                хороший продукт великим, и я хочу быть частью этого процесса!
+            </p>
+        </section>
+
+        <section>
+            <h2>Полезные ресурсы</h2>
+            <p>Ресурсы, которые помогают мне учиться:</p>
+            
+            <ul>
+                <li><a href="https://software-testing.ru" target="_blank">Software-Testing.ru</a> - статьи и теория</li>
+                <li><a href="https://docs.google.com" target="_blank">Google Sheets</a> - для ведения тест-кейсов</li>
+                <li><a href="https://postman.com" target="_blank">Postman</a> - API тестирование</li>
+                <li><a href="https://github.com" target="_blank">GitHub</a> - изучение кода и автоматизации</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Свяжитесь со мной</h2>
+            <p>Буду рада пообщаться с коллегами-тестировщиками и обменяться опытом!</p>
+            
+            <div class="social-links">
+                <a href="https://github.com" class="btn" target="_blank">GitHub</a>
+                <a href="https://linkedin.com" class="btn" target="_blank">LinkedIn</a>
+                <a href="mailto:example@email.com" class="btn">Email</a>
+                <a href="https://t.me" class="btn" target="_blank">Telegram</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Сергей. Все права защищены.</p>
+            <p>Создано с ❤️ и вниманием к деталям 🐛</p>
+        </footer>
+    </div>
+</body>
+</html>
